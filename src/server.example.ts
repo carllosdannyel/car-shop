@@ -6,6 +6,7 @@
 // connectToDatabase()
 //   .then(() => {
 //     app.listen(PORT, () => console.log(`Running server on port: ${PORT}`));
+
 //   })
 //   .catch((error) => {
 //     console.log('Connection with database generated an error:\r\n');
