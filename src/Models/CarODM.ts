@@ -2,7 +2,6 @@ import {
   Schema,
 } from 'mongoose';
 import ICar from '../Interfaces/ICar';
-import Car from '../Domains/Car';
 import AbstractODM from './AbstractODM';
 
 export default class CarODM extends AbstractODM<ICar> {
@@ -17,10 +16,5 @@ export default class CarODM extends AbstractODM<ICar> {
       seatsQty: { type: Number, required: true },
     });
     super(schema, 'Car');
-  }
-
-  public async createCar(car: ICar): Promise<Car> {
-    const newCar = await this.model.create({ ...car });
-    return new Car({ ...newCar });
   }
 }
