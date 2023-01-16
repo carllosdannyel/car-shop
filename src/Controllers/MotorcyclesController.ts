@@ -21,4 +21,19 @@ export default class MotorcyclesController {
     const newMotorcycle = await this.service.create(motorcycle);
     return this.res.status(201).json(newMotorcycle);
   }
+
+  public async find() {
+    const motorcycles = await this.service.find();
+    return this.res.status(200).json(motorcycles);
+  }
+
+  public async findById() {
+    try {
+      const { id } = this.req.params;
+      const motorcycle = await this.service.findById(id);
+      return this.res.status(200).json(motorcycle);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
