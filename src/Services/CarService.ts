@@ -23,10 +23,18 @@ export default class CarService {
     return cars.map((car) => this.createCarDomain(car));
   }
 
-  public async findById(id: string) {
+  public async findById(_id: string) {
     const carODM = new CarODM();
-    const car = await carODM.findById(id);
+    const car = await carODM.findById(_id);
     if (!car) throw new Erro(404, 'Car not found');
     return this.createCarDomain(car);
+  }
+
+  public async update(_id: string, obj: ICar) {
+    const carODM = new CarODM();
+    const car = await carODM.findById(_id);
+    if (!car) throw new Erro(404, 'Car not found');
+    const newCar = await carODM.update(_id, { ...obj });
+    return this.createCarDomain(newCar);
   }
 }
