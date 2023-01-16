@@ -29,4 +29,12 @@ export default class MotorcyclesService {
     if (!motorcycle) throw new Erro(404, 'Motorcycle not found');
     return this.createCarDomain(motorcycle);
   }
+
+  public async update(_id: string, obj: IMotorcycle) {
+    const motorcyclesODM = new MotorcyclesODM();
+    const motorcycle = await motorcyclesODM.findById(_id);
+    if (!motorcycle) throw new Erro(404, 'Motorcycle not found');
+    const newCar = await motorcyclesODM.update(_id, { ...obj });
+    return this.createCarDomain(newCar);
+  }
 }
