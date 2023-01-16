@@ -10,7 +10,7 @@ export default class MotorcyclesODM extends AbstractODM<IMotorcycle> {
       model: { type: String, required: true },
       year: { type: Number, required: true },
       color: { type: String, required: true },
-      status: { type: Boolean, required: true, default: false },
+      status: { type: Boolean, default: false },
       buyValue: { type: Number, required: true },
       category: { type: String, required: true },
       engineCapacity: { type: Number, required: true },
