@@ -1,7 +1,7 @@
-import Car from '../../../src/Domains/Car';
-import ICar from '../../../src/Interfaces/ICar';
+import Motorcycle from '../../../../src/Domains/Motorcycle';
+import IMotocycle from '../../../../src/Interfaces/IMotorcycle';
 
-export const carMocks: ICar[] = [
+export const motorcycleMocks: IMotocycle[] = [
   {
     id: '6348513f34c397abcad040b2',
     model: 'Marea',
@@ -9,8 +9,8 @@ export const carMocks: ICar[] = [
     color: 'Black',
     status: true,
     buyValue: 15.990,
-    doorsQty: 4,
-    seatsQty: 5,
+    category: 'Custom',
+    engineCapacity: 5,
   },
   {
     id: '6348513f34c397abcad040b2',
@@ -19,28 +19,28 @@ export const carMocks: ICar[] = [
     color: 'Black',
     status: true,
     buyValue: 15.990,
-    doorsQty: 4,
-    seatsQty: 5,
+    category: 'Street',
+    engineCapacity: 5,
   },
 ];
 
-export const carInput: ICar = {
+export const motorcycleInput: IMotocycle = {
   model: 'Corsa',
   year: 1988,
   color: 'Black',
   status: true,
   buyValue: 30.000,
-  doorsQty: 4,
-  seatsQty: 6,
+  category: 'Street',
+  engineCapacity: 6,
 };
 
-export const carOutput: Car = new Car({
+export const motorcycleOutput: Motorcycle = new Motorcycle({
   id: '6348513f34c397abcad040b2',
   model: 'Marea',
   year: 2002,
   color: 'Black',
   status: true,
   buyValue: 15.990,
-  doorsQty: 4,
-  seatsQty: 5,
+  category: 'Trail',
+  engineCapacity: 5,
 });

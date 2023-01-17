@@ -8,9 +8,7 @@ export default class CarService {
   private NOT_FOUND = 'Car not found';
 
   private createCarDomain(car: ICar | null): Car | null {
-    if (car) {
-      return new Car(car);
-    }
+    if (car) { return new Car(car); }
     return null;
   }
 
@@ -37,8 +35,7 @@ export default class CarService {
   }
 
   public async delete(_id: string) {
-    const carODM = new CarODM();
-    const carDeleted = await carODM.delete(_id);
+    const carDeleted = await this.carODM.delete(_id);
     if (!carDeleted) throw new Erro(404, this.NOT_FOUND);
   }
 }

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Model } from 'mongoose';
 import CarService from '../../../src/Services/CarService';
-import { carMocks, carInput, carOutput } from './CarMocks';
+import { carMocks, carInput, carOutput } from './Mocks/CarMocks';
 import Car from '../../../src/Domains/Car';
 
 const CAR_NOT_FOUND = 'Car not found';
@@ -19,7 +19,7 @@ describe('Testes na camada CarService', function () {
     const service = new CarService();
     const result = await service.create(carInput);
       
-    expect(result).to.be.deep.equal(null);
+    expect(result).to.be.equal(null);
   });
     
   it('POST /cars - Cadastrando um novo carro com SUCESSO', async function () {
@@ -62,7 +62,7 @@ describe('Testes na camada CarService', function () {
     }
   });
 
-  it('PUT /cars:id - Tentando editar um carro que existe', async function () {
+  it('PUT /cars/:id - Tentando editar um carro que existe', async function () {
     const { id, ...cars } = carMocks[1];
 
     sinon.stub(Model, 'findByIdAndUpdate').resolves(carMocks[1]);
@@ -76,7 +76,7 @@ describe('Testes na camada CarService', function () {
     }
   });
 
-  it('PUT /cars:id - Tentando editar um carro que não existe', async function () {
+  it('PUT /cars/:id - Tentando editar um carro que não existe', async function () {
     const { id, ...cars } = carMocks[1];
 
     sinon.stub(Model, 'findByIdAndUpdate').resolves();
@@ -100,7 +100,7 @@ describe('Testes na camada CarService', function () {
     }
   });
 
-  it('DELETE /cars/:id - Lançando erro quando não encontra o id do carro', async function () {
+  it('DELETE /cars/:id - Lançando erro quando não encontra o carro pelo id', async function () {
     sinon.stub(Model, 'findByIdAndDelete').resolves();
 
     try {
