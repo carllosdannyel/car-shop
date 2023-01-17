@@ -1,11 +1,10 @@
 import Car from '../Domains/Car';
 import ICar from '../Interfaces/ICar';
 import CarODM from '../Models/CarODM';
-import Erro from '../utils/ErrorHandler';
-
-const NOT_FOUND = 'Car not found';
 
 export default class CarService {
+  private carODM: CarODM = new CarODM();
+
   private createCarDomain(car: ICar | null): Car | null {
     if (car) {
       return new Car(car);
@@ -14,37 +13,27 @@ export default class CarService {
   }
 
   public async create(car: ICar) {
-    const carODM = new CarODM();
-    const newCar = await carODM.create(car);
+    const newCar = await this.carODM.create(car);
     return this.createCarDomain(newCar);
   }
 
   public async find() {
-    const carODM = new CarODM();
-    const cars = await carODM.find();
+    const cars = await this.carODM.find();
     return cars.map((car) => this.createCarDomain(car));
   }
 
   public async findById(_id: string) {
-    const carODM = new CarODM();
-    const car = await carODM.findById(_id);
-    if (!car) throw new Erro(404, NOT_FOUND);
+    const car = await this.carODM.findById(_id);
     return this.createCarDomain(car);
   }
 
   public async update(_id: string, obj: ICar) {
-    const carODM = new CarODM();
-    const car = await carODM.findById(_id);
-    if (!car) throw new Erro(404, NOT_FOUND);
-    const newCar = await carODM.update(_id, { ...obj });
+    const newCar = await this.carODM.update(_id, { ...obj });
     return this.createCarDomain(newCar);
   }
 
   public async delete(_id: string) {
     const carODM = new CarODM();
-    const car = await carODM.findById(_id);
-    if (!car) throw new Erro(404, NOT_FOUND);
     await carODM.delete(_id);
-    return '';
   }
 }
