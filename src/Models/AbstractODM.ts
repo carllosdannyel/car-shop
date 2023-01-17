@@ -1,6 +1,8 @@
 import { Model, Schema, models, model, isValidObjectId, UpdateQuery } from 'mongoose';
 import Erro from '../utils/ErrorHandler';
 
+const INVALID_ID = 'Invalid mongo id';
+
 export default abstract class AbstractODM<T> {
   private schema: Schema<T>;
   private _model: Model<T>;
@@ -10,6 +12,12 @@ export default abstract class AbstractODM<T> {
     this.schema = schema;
     this.modelName = modelName;
     this._model = models[this.modelName] || model(this.modelName, this.schema);
+  }
+
+  private isValidObjectId(_id: string) {
+    if (!isValidObjectId(_id)) {
+      throw new Erro(422, INVALID_ID);
+    }
   }
 
   protected get model(): Model<T> {
@@ -25,14 +33,13 @@ export default abstract class AbstractODM<T> {
   }
 
   public async findById(_id: string): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw new Erro(422, 'Invalid mongo id');
+    this.isValidObjectId(_id);
     const car = this._model.findById(_id);
     return car;
   }
 
   public async update(_id: string, obj: Partial<T>): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw Error('Invalid Mongo id');
-
+    this.isValidObjectId(_id);
     return this._model.findByIdAndUpdate(
       { _id },
       { ...obj } as UpdateQuery<T>,
@@ -41,7 +48,7 @@ export default abstract class AbstractODM<T> {
   }
 
   public async delete(_id: string) {
-    if (!isValidObjectId(_id)) throw Error('Invalid Mongo id');
+    this.isValidObjectId(_id);
     return this._model.findByIdAndDelete(_id);
   }
 }
