@@ -62,6 +62,20 @@ describe('Testes na camada CarService', function () {
     }
   });
 
+  it('PUT /cars:id - Tentando editar um carro que existe', async function () {
+    const { id, ...cars } = carMocks[1];
+
+    sinon.stub(Model, 'findByIdAndUpdate').resolves(carMocks[1]);
+
+    try {
+      const service = new CarService();
+      const newCar = await service.update(carMocks[0].id as string, cars);
+      expect(newCar).to.be.deep.equal(carMocks[1]);
+    } catch (error) {
+      expect((error as Error).message).to.be.equal(CAR_NOT_FOUND);
+    }
+  });
+
   it('PUT /cars:id - Tentando editar um carro que não existe', async function () {
     const { id, ...cars } = carMocks[1];
 
@@ -76,12 +90,14 @@ describe('Testes na camada CarService', function () {
   });
 
   it('DELETE /cars/:id - Deletando um carro específico pelo id', async function () {
-    sinon.stub(Model, 'findByIdAndDelete').resolves();
-
-    const service = new CarService();
-    const carDeleted = await service.delete(carMocks[0].id as string);
-
-    expect(carDeleted).to.be.equal(undefined);
+    sinon.stub(Model, 'findByIdAndDelete').resolves(carMocks[0]);
+    try {
+      const service = new CarService();
+      const carDeleted = await service.delete(carMocks[0].id as string);
+      expect(carDeleted).to.be.equal(undefined);
+    } catch (error) {
+      expect((error as Error).message).to.be.equal(CAR_NOT_FOUND);
+    }
   });
 
   it('DELETE /cars/:id - Lançando erro quando não encontra o id do carro', async function () {

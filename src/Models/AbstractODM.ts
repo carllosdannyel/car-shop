@@ -1,9 +1,6 @@
 import { Model, Schema, models, model, isValidObjectId, UpdateQuery } from 'mongoose';
 import Erro from '../utils/ErrorHandler';
 
-const INVALID_ID = 'Invalid mongo id';
-const NOT_FOUND = 'Car not found';
-
 export default abstract class AbstractODM<T> {
   private schema: Schema<T>;
   private _model: Model<T>;
@@ -17,7 +14,7 @@ export default abstract class AbstractODM<T> {
 
   private isValidObjectId(_id: string) {
     if (!isValidObjectId(_id)) {
-      throw new Erro(422, INVALID_ID);
+      throw new Erro(422, 'Invalid mongo id');
     }
   }
 
@@ -35,26 +32,20 @@ export default abstract class AbstractODM<T> {
 
   public async findById(_id: string): Promise<T | null> {
     this.isValidObjectId(_id);
-    const car = await this._model.findById(_id);
-    if (!car) throw new Erro(404, NOT_FOUND);
-    return car;
+    return this._model.findById(_id);
   }
 
   public async update(_id: string, obj: Partial<T>): Promise<T | null> {
     this.isValidObjectId(_id);
-    const newCar = await this._model.findByIdAndUpdate(
+    return this._model.findByIdAndUpdate(
       { _id },
       { ...obj } as UpdateQuery<T>,
       { new: true },
-      () => { throw new Erro(404, NOT_FOUND); },
     );
-    return newCar;
   }
 
-  public async delete(_id: string): Promise<void> {
+  public async delete(_id: string): Promise<T | null> {
     this.isValidObjectId(_id);
-    await this._model.findByIdAndDelete(_id, null, () => {
-      throw new Erro(404, NOT_FOUND); 
-    });
+    return this._model.findByIdAndDelete(_id);
   }
 }
